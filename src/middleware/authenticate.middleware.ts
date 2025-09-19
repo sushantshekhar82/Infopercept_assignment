@@ -2,10 +2,14 @@ import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import User from "../model/user.model";
 import config from '../config/contant';
+import getDbNameFromEmail from "../helpers/getDatabasebyEmail.helper";
+import getDynamicConnection from "../helpers/checkDynamicDatabase.helper";
+import { getDynamicDatabaseModels } from "../model/getDynamicModel";
 interface AuthRequest extends Request {
   loggedInUser?: {
     userId: string;
     role: string;
+    email: string;
   };
 }
 
@@ -26,6 +30,10 @@ const authMiddleware = async (req: AuthRequest, res: Response, next: NextFunctio
       config.app.SECRETKEY as string
     ) as JwtPayload & { userId: string };
 
+    const dbName = getDbNameFromEmail(decodedToken.email); // dynamic DB name
+    const conn = getDynamicConnection(dbName);     // dynamic connection
+    const { User } = getDynamicDatabaseModels(conn);
+
     const user = await User.findById(decodedToken.userId);
     if (!user) {
       return res.status(401).json({ message: "Authentication failed" });
@@ -39,6 +47,7 @@ const authMiddleware = async (req: AuthRequest, res: Response, next: NextFunctio
     req.loggedInUser = {
       userId: user._id.toString(),
       role: user.role,
+      email: user.email
     };
 
     next();

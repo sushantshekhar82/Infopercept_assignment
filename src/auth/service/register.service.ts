@@ -1,15 +1,21 @@
 // Import user model
-import User from '../../model/user.model';
+import getDynamicConnection from '../../helpers/checkDynamicDatabase.helper';
+import getDbNameFromEmail from '../../helpers/getDatabasebyEmail.helper';
+import { getDynamicDatabaseModels } from '../../model/getDynamicModel';
 import bcrypt from 'bcryptjs';
 const registerService = async (container:any) => {
    try {
 
-    const { username, password, role } = container.input.body;
+    const { email, password, role } = container.input.body;
 
-    // Check if the username already exists
-    const existingUser = await User.findOne({ username });
+      const dbName = getDbNameFromEmail(email); // dynamic DB name
+      const conn = getDynamicConnection(dbName);     // dynamic connection
+      const { User } = getDynamicDatabaseModels(conn);
+
+    // Check if the email already exists
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
-        const err:any = new Error('Username already exists');
+        const err:any = new Error('email already exists');
         err.statusCode = 400;
         throw err;
     }
@@ -19,7 +25,7 @@ const registerService = async (container:any) => {
 
     // Create a new user
     const newUser = new User({
-      username,
+      email,
       password: hashedPassword,
       role
     });

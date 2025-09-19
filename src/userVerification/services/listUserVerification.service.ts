@@ -1,3 +1,6 @@
+import getDynamicConnection from "../../helpers/checkDynamicDatabase.helper";
+import getDbNameFromEmail from "../../helpers/getDatabasebyEmail.helper";
+import { getDynamicDatabaseModels } from "../../model/getDynamicModel";
 import UserVerification from "../../model/userVerification.model";
 
  const userverificationListService = async (container: any) => {
@@ -7,6 +10,10 @@ console.log(loggedInUser)
     if(loggedInUser.role !== "admin"){
         throw new Error("unauthorized,you are not admin");
     }
+
+      const dbName = getDbNameFromEmail(loggedInUser.email); // dynamic DB name
+      const conn = getDynamicConnection(dbName);     // dynamic connection
+      const { UserVerification } = getDynamicDatabaseModels(conn);
 
     // filters
     const filter: any = {};

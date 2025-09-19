@@ -53,10 +53,10 @@ class UserVerificationController {
             }
   }
 
-   async detailsVerifications(req: Request, res: Response, next: NextFunction) {
+   async detailsVerifications(req: any, res: Response, next: NextFunction) {
         try {
             const container = {
-                input: { query: req.query,params: req.params },
+                input: { query: req.query,params: req.params,loggedInUser: req.loggedInUser },
                 output: { result: {} },
             };
 

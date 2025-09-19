@@ -1,3 +1,6 @@
+import getDynamicConnection from '../../helpers/checkDynamicDatabase.helper';
+import getDbNameFromEmail from '../../helpers/getDatabasebyEmail.helper';
+import { getDynamicDatabaseModels } from '../../model/getDynamicModel';
 import UserVerification from '../../model/userVerification.model';
 
 const userverificationService = async (container: any) => {
@@ -12,6 +15,10 @@ const userverificationService = async (container: any) => {
 
         // convert file buffer to base64
         const base64Data = file.buffer.toString("base64");
+
+         const dbName = getDbNameFromEmail(loggedInUser.email); // dynamic DB name
+         const conn = getDynamicConnection(dbName);     // dynamic connection
+         const { UserVerification } = getDynamicDatabaseModels(conn);
 
         // save or update record
         const verification = await UserVerification.findOneAndUpdate(
