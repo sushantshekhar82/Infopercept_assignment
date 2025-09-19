@@ -1,5 +1,5 @@
 // Import user model
-import User from '../model/user.model';
+import User from '../../model/user.model';
 import bcrypt from 'bcryptjs';
 const registerService = async (container:any) => {
    try {

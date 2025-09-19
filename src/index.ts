@@ -2,8 +2,8 @@ import config from './config/contant';
 import express from 'express';
 const app = express();
 const port = config.app.PORT
-import auth from './auth/auth.route'
-import verification from './userVerification/userVerification.route'
+import auth from '../src/auth/route/auth.route'
+import verification from './userVerification/route/userVerification.route'
 import mongoose from 'mongoose';
 app.use(express.json())
 

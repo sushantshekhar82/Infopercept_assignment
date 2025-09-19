@@ -1,4 +1,4 @@
-import UserVerification from '../model/userVerification.model';
+import UserVerification from '../../model/userVerification.model';
 
 const userverificationService = async (container: any) => {
     try {

@@ -1,7 +1,7 @@
- import User from '../model/user.model';
+ import User from '../../model/user.model';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken'
-import config from '../config/contant';
+import config from '../../config/contant';
 const loginSerivce = async (container:any) => {
 
     try {

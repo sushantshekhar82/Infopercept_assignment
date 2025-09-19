@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express-serve-static-core";
-import registerService from "./register.service";
-import responseHelper from "../helpers/response.helper";
-import loginSerivce from "./login.service";
+import registerService from "../service/register.service";
+import responseHelper from "../../helpers/response.helper";
+import loginSerivce from "../service/login.service";
 
 class AuthController {
 
