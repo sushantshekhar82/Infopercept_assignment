@@ -37,7 +37,7 @@ console.log("dbname",dbName)
     console.log("conn")
     const { User } = getDynamicDatabaseModels(conn);
 
-    //await User.create({ email, password: "default@123",role: 'admin' }); // optional initial user
+    await User.create({ email, password: "admin@123",role: 'admin' }); // optional initial user
 
     container.output.result = {
         message: `Tenant created with DB: ${dbName}`

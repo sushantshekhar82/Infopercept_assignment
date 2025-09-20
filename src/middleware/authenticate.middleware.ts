@@ -15,29 +15,42 @@ interface AuthRequest extends Request {
 
 const authMiddleware = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
+    console.log("enter in middleware")
     const authHeader = req.header("Authorization");
     if (!authHeader) {
       return res.status(401).json({ message: "Authentication required" });
     }
 
     const token = authHeader.replace("Bearer ", "");
+    console.log("get token",token)
     if (!token) {
       return res.status(401).json({ message: "Authentication required" });
     }
 
-    const decodedToken = jwt.verify(
-      token,
-      config.app.SECRETKEY as string
-    ) as JwtPayload & { userId: string };
+    const publicKey = `-----BEGIN PUBLIC KEY-----\n${config.app.KEYCLOK_PUBLIC_KEY}\n-----END PUBLIC KEY-----`;
 
-    const dbName = getDbNameFromEmail(decodedToken.email); // dynamic DB name
+    const decodedToken:any = jwt.verify(
+      token,
+     publicKey as string,{
+        algorithms: ["RS256"]
+      }
+    )
+    // as JwtPayload & { userId: string };
+console.log("decodedToken",decodedToken)
+    const userEmail:any = decodedToken.email;
+    const dbName = getDbNameFromEmail(userEmail); // dynamic DB name
     const conn = getDynamicConnection(dbName);     // dynamic connection
     const { User } = getDynamicDatabaseModels(conn);
 
-    const user = await User.findById(decodedToken.userId);
+    let user:any = await User.findOne({email: userEmail});
     if (!user) {
-      return res.status(401).json({ message: "Authentication failed" });
+       const newUser = new User({
+        email: userEmail
+      });
+
+      await newUser.save();
     }
+    user = await User.findOne({email: userEmail});
 
     if (user.role !== "user" && user.role !== "admin") {
       return res.status(403).json({ message: "Invalid user role" });

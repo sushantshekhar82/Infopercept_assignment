@@ -7,9 +7,9 @@ import UserVerification from "../../model/userVerification.model";
     const { query } = container.input;
     const { loggedInUser } = container.input;
 console.log(loggedInUser)
-    if(loggedInUser.role !== "admin"){
-        throw new Error("unauthorized,you are not admin");
-    }
+    // if(loggedInUser.role !== "admin"){
+    //     throw new Error("unauthorized,you are not admin");
+    // }
 
       const dbName = getDbNameFromEmail(loggedInUser.email); // dynamic DB name
       const conn = getDynamicConnection(dbName);     // dynamic connection

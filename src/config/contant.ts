@@ -8,6 +8,7 @@ export default{
         MONGODBURL: process.env.MONGODBURL,
         MONGO_USERNAME: process.env.MONGO_USERNAME,
         MONGO_PASSWORD: process.env.MONGO_PASSWORD,
-        MONGO_CLUSTER: process.env.MONGO_CLUSTER
+        MONGO_CLUSTER: process.env.MONGO_CLUSTER,
+        KEYCLOK_PUBLIC_KEY: process.env.KEYCLOK_PUBLIC_KEY
     }
 }
