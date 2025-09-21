@@ -45,7 +45,8 @@ console.log("decodedToken",decodedToken)
     let user:any = await User.findOne({email: userEmail});
     if (!user) {
        const newUser = new User({
-        email: userEmail
+        email: userEmail,
+        role: decodedToken.realm_access.roles.includes("admin") ? "admin" : "user"
       });
 
       await newUser.save();
@@ -55,7 +56,7 @@ console.log("decodedToken",decodedToken)
     if (user.role !== "user" && user.role !== "admin") {
       return res.status(403).json({ message: "Invalid user role" });
     }
-
+console.log("decode-----",decodedToken.resource_access.account.roles)
     // attach loggedInUser to request
     req.loggedInUser = {
       userId: user._id.toString(),

@@ -9,6 +9,7 @@ export default{
         MONGO_USERNAME: process.env.MONGO_USERNAME,
         MONGO_PASSWORD: process.env.MONGO_PASSWORD,
         MONGO_CLUSTER: process.env.MONGO_CLUSTER,
-        KEYCLOK_PUBLIC_KEY: process.env.KEYCLOK_PUBLIC_KEY
+        KEYCLOK_PUBLIC_KEY: process.env.KEYCLOK_PUBLIC_KEY,
+        SUREPASS_API_TOKEN: process.env.SUREPASS_API_TOKEN
     }
 }

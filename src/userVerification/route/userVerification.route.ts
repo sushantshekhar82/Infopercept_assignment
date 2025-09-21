@@ -26,4 +26,10 @@ router.get("/user-verification/:id",
     userVerificationController.detailsVerifications
 );
 
+// Update verification status route
+router.put("/user-verification/:verificationId/status", 
+    authMiddleware, 
+    userVerificationController.updateVerificationStatus
+);
+
 export default router;

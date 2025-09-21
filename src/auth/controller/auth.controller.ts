@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express-serve-static-core";
 import registerService from "../service/register.service";
 import responseHelper from "../../helpers/response.helper";
 import loginSerivce from "../service/login.service";
+import getUserService from "../service/getUser.service";
 
 class AuthController {
 
@@ -58,6 +59,26 @@ class AuthController {
             .json(await responseHelper.validationErrorResponse(error));
         }
 
+    }
+
+    async getUser(req: any, res: Response, next: NextFunction) {
+        try {
+            const container = {
+                input: {
+                    loggedInUser: req.loggedInUser
+                },
+                output: {
+                    result: {}
+                }
+            };
+
+            await getUserService(container);
+
+            res.status(200).json(await responseHelper.successResponse(container.output));
+        } catch (error) {
+            res.status(await responseHelper.getStatusCode(error))
+                .json(await responseHelper.validationErrorResponse(error));
+        }
     }
 }
 

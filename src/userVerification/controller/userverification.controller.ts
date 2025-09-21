@@ -3,6 +3,7 @@ import responseHelper from "../../helpers/response.helper";
 import userverificationService from "../services/userVerification.service";
 import userverificationListService from "../services/listUserVerification.service";
 import userverificationDetailsService from "../services/getUserVerificationDetails.service";
+import updateUserVerificationStatusService from "../services/updateUserVerificationStatus.service";
 class UserVerificationController {
 
     async userVerification(req:any,res:Response,next:NextFunction){
@@ -70,6 +71,29 @@ class UserVerificationController {
                 .status(await responseHelper.getStatusCode(error))
                 .json(await responseHelper.validationErrorResponse(error));
             }
+  }
+
+  async updateVerificationStatus(req: any, res: Response, next: NextFunction) {
+        try {
+            const container = {
+                input: { 
+                    body: req.body, 
+                    params: req.params, 
+                    loggedInUser: req.loggedInUser 
+                },
+                output: { result: {} },
+            };
+
+            await updateUserVerificationStatusService(container);
+
+            res
+                .status(200)
+                .json(await responseHelper.successResponse(container.output));
+        } catch (error) {
+            res
+                .status(await responseHelper.getStatusCode(error))
+                .json(await responseHelper.validationErrorResponse(error));
+        }
   }
 
 }
